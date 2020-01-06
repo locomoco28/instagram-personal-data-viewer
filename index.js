@@ -52,7 +52,7 @@ ipcMain.handle('unzip files', (e, files) => {
         //                 These have to be replaced by data uris
         //                 or sth from the actual image files.
         //                 part 3 and above are for media
-        //"media.json", // sent media
+        //,"media.json", // sent media
     ];
     if (files.length > 0) {
         files.forEach(file => {
@@ -75,6 +75,8 @@ ipcMain.handle('unzip files', (e, files) => {
     } else {
         return { ok: false, error: 'missing files', files: files };
     }
+    var keys = Object.keys(userData);
     userData['ok'] = true;
+    userData['totalKeys'] = keys;
     return userData;
 });

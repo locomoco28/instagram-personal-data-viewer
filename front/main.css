@@ -8,3 +8,15 @@
 body {
     background: #fff;
 }
+
+#app {
+    height: 100vh;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+#views {
+    width: 200px;
+    border-right: 2px solid #111;
+    height: 100%;
+}

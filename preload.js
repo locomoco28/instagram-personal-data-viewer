@@ -7,9 +7,9 @@ require('./front/materialize/js/materialize.min.js');
 window.addEventListener(
     'DOMContentLoaded',
     function() {
-        async function getFileData(files) {
+        window.getFileData = async files => {
             const data = await ipcRenderer.invoke('unzip files', files);
-            /**/
+            /**
             await fs.writeFile(
                 'C:\\Users\\Eren\\Desktop\\tmp.txt',
                 JSON.stringify(data),
@@ -20,9 +20,10 @@ window.addEventListener(
             /**/
 
             // display files
-            console.log(JSON.stringify(data).length);
-        }
-
+            //console.log(JSON.stringify(data).length);
+            return data;
+        };
+        /*
         document.getElementById('f').addEventListener('change', function(e) {
             e.preventDefault();
             var files = e.target.files;
@@ -47,6 +48,7 @@ window.addEventListener(
                 });
             }
         });
+        */
     },
     false
 );

@@ -4,14 +4,23 @@
         <meta charset="utf-8" />
         <title>Instagram - Personal data viewer</title>
         <link rel="stylesheet" type="text/css" href="./main.css" />
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="./materialize/css/materialize.min.css"
-        />
+        <link rel="stylesheet" type="text/css" href="./toast.css" />
     </head>
+    <!-- <input id="f" type="file" multiple /> -->
     <body>
-        <h1>Hello World</h1>
-        <input id="f" type="file" multiple />
+        <div id="main"></div>
+
+        <!-- Load React. -->
+        <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+        <script
+            src="https://unpkg.com/react@16/umd/react.development.js"
+            crossorigin=""
+        ></script>
+        <script
+            src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+            crossorigin=""
+        ></script>
+
+        <script src="./react.js"></script>
     </body>
 </html>
