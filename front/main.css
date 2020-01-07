@@ -7,6 +7,7 @@
 }
 body {
     background: #fff;
+    overflow: hidden;
 }
 
 #app {
@@ -19,4 +20,28 @@ body {
     width: 200px;
     border-right: 2px solid #111;
     height: 100%;
+}
+
+#page {
+    padding: 12px 30px;
+    overflow-y: auto;
+}
+
+#page h1 {
+    margin-bottom: 12px;
+    padding: 0 15px;
+    border-bottom: 2px solid #111;
+}
+
+#page .comments li {
+    margin: 0 15px 8px;
+    padding: 0 15px;
+    max-width: 600px;
+    list-style: none;
+    word-wrap: break-word;
+}
+
+#page .comments li:not(:last-child) {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #111;
 }

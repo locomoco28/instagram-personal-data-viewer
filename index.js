@@ -65,9 +65,9 @@ ipcMain.handle('unzip files', (e, files) => {
                         ext == '.json' &&
                         dataToExtract.indexOf(entry.entryName) > -1
                     ) {
-                        userData[entry.entryName] = entry
-                            .getData()
-                            .toString('utf8');
+                        userData[entry.entryName] = JSON.parse(
+                            entry.getData().toString('utf8')
+                        );
                     }
                 });
             }

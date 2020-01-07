@@ -2,6 +2,8 @@
 
 const e = React.createElement;
 
+var displayFiles = [];
+
 class Home extends React.Component {
     render() {
         return e('div', { className: 'pHome' }, e('p', {}, 'Home'));
@@ -41,8 +43,9 @@ class SelectFile extends React.Component {
             var resp = await window.getFileData(data);
 
             // resp = data
-            // TODO: insert data into fields (plain js)
-            console.log('data updated', JSON.stringify(resp).length);
+            displayFiles = resp.totalKeys;
+            window.displayData = resp;
+            console.log('data updated', JSON.stringify(resp).length, resp);
         } else {
             M.toast({
                 html: 'No valid files were passed',
@@ -85,6 +88,62 @@ class Main extends React.Component {
 
     // TODO: UI
     render() {
+        var menuElements = [];
+        displayFiles.forEach(keyWExt => {
+            var key = keyWExt.substring(0, keyWExt.length - 5);
+            menuElements.push(
+                e(
+                    'li',
+                    {
+                        onClick: () => {
+                            this.setState({ activePage: key });
+                        },
+                        key: key
+                    },
+                    key
+                )
+            );
+        });
+
+        let finalPage = this.state.activePage;
+        if (typeof this.state.activePage == 'string') {
+            switch (this.state.activePage) {
+                case 'comments': {
+                    finalPage = e(pageComments);
+                    break;
+                }
+                case 'connections': {
+                    finalPage = null;
+                    break;
+                }
+                case 'contacts': {
+                    finalPage = null;
+                    break;
+                }
+                case 'messages': {
+                    finalPage = null;
+                    break;
+                }
+                case 'profile': {
+                    finalPage = null;
+                    break;
+                }
+                case 'saved': {
+                    finalPage = null;
+                    break;
+                }
+                /*
+                case 'media': {
+                    break;
+                */
+                default: {
+                    finalPage =
+                        'There has been an error<br/>Final Page: ' +
+                        this.state.activePage;
+                }
+            }
+        } // else React Element
+
         return e(
             'div',
             { id: 'app' },
@@ -92,33 +151,10 @@ class Main extends React.Component {
                 'div',
                 { id: 'views' },
                 this.state.filesSelected
-                    ? e(
-                          'ul',
-                          {},
-                          e(
-                              'li',
-                              {
-                                  onClick: () => {
-                                      this.setState({ activePage: e(Home) });
-                                  }
-                              },
-                              'Home'
-                          ),
-                          e(
-                              'li',
-                              {
-                                  onClick: () => {
-                                      this.setState({
-                                          activePage: e(Settings)
-                                      });
-                                  }
-                              },
-                              'Settings'
-                          )
-                      )
+                    ? e('ul', {}, menuElements)
                     : e('h2', {}, 'Please Select File')
             ),
-            e('div', { id: 'page' }, this.state.activePage)
+            e('div', { id: 'page' }, finalPage)
         );
     }
 }

@@ -1,6 +1,7 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 const fs = require('fs');
+const shell = require('electron').shell;
 
 require('./front/materialize/js/materialize.min.js');
 
@@ -49,6 +50,19 @@ window.addEventListener(
             }
         });
         */
+
+        /* open hrefs in default browser */
+        document.addEventListener('click', function(event) {
+            var target = event.target || event.srcElement;
+            if (
+                target.nodeName.toLowerCase() == 'a' &&
+                target.href &&
+                target.href.substring(0, 4) == 'http'
+            ) {
+                event.preventDefault();
+                shell.openExternal(target.href);
+            }
+        });
     },
     false
 );
