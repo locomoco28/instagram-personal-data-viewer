@@ -113,11 +113,11 @@ class Main extends React.Component {
                     break;
                 }
                 case 'connections': {
-                    finalPage = null;
+                    finalPage = e(pageConnections);
                     break;
                 }
                 case 'contacts': {
-                    finalPage = null;
+                    finalPage = e(pageContacts);
                     break;
                 }
                 case 'messages': {
@@ -125,7 +125,7 @@ class Main extends React.Component {
                     break;
                 }
                 case 'profile': {
-                    finalPage = null;
+                    finalPage = e(pageProfile);
                     break;
                 }
                 case 'saved': {
