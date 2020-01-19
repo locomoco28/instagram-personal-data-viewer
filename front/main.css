@@ -63,3 +63,17 @@ body {
 .contactsContainer > * {
     padding: 40px 0;
 }
+
+.profileImage {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    transition: border-radius 0.25s, padding 0.25s, border 0.25s;
+    padding: 30px;
+    border: 0 solid #000;
+}
+.profileImage:hover {
+    border-radius: 0;
+    padding: 0;
+    border: 2px solid #000;
+}

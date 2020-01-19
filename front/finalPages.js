@@ -1,9 +1,10 @@
 /*
 class pageComments extends React.Component {
     render() {
-        let comments = {
-            postComments: window.displayData['comments.json'].
-        };
+        let comments = [];
+        window.displayData['comments.json'].forEach(item => {
+            comments.push(item);
+        });
         return e(
             'div',
             {},
@@ -14,21 +15,93 @@ class pageComments extends React.Component {
 }
 */
 
-/*
 class pageProfile extends React.Component {
     render() {
-        let comments = {
-            postComments: window.displayData['profile.json'].
-        };
+        let profile = window.displayData['profile.json'];
+
+        let today = new Date();
+        let birthDate = new Date(profile['date_of_birth']);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        let m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        let millisecondsSinceJoin = Math.abs(
+            new Date(profile['date_joined']).getTime() - today.getTime()
+        );
+
         return e(
             'div',
             {},
-            e('h1', {}, 'Your Comments'),
-            e('p', {}, 'Comments: idek')
+            e('h1', {}, 'Your Profile'),
+            e(
+                'div',
+                { style: { display: 'flex', flexFlow: 'row wrap' } },
+                e('img', {
+                    className: 'profileImage',
+                    src: profile['profile_pic_url'],
+                    alt:
+                        'Profile Image of instagram.com/' + profile['username'],
+                    title: 'Profile image',
+                    style: { marginRight: '8px' }
+                }),
+                e(
+                    'div',
+                    { style: { display: 'flex', flexFlow: 'column nowrap' } },
+                    e('p', { title: 'Name' }, profile['name']),
+                    e(
+                        'p',
+                        { title: 'Username' },
+                        '@',
+                        e(
+                            'a',
+                            {
+                                href:
+                                    'https://instagram.com/' +
+                                    profile['username']
+                            },
+                            profile['username']
+                        ),
+                        ' (' +
+                            (profile['private_account'] ? 'is' : 'is not') +
+                            ' private)'
+                    ),
+                    e('p', { title: 'Email' }, profile['email']),
+                    e(
+                        'p',
+                        {},
+                        age + 'y/o (Born: ' + profile['date_of_birth'] + ')'
+                    ),
+                    e(
+                        'p',
+                        {
+                            title: 'Gender',
+                            style: { textTransform: 'Capitalize' }
+                        },
+                        profile['gender']
+                    ),
+                    e(
+                        'p',
+                        {},
+                        'Instagram user since ' +
+                            Math.floor(
+                                millisecondsSinceJoin /
+                                    (millisecondsSinceJoin < 31555e6
+                                        ? 864e5 // 1 day in milliseconds
+                                        : 31555e6) // 1 year in milliseconds
+                            ) +
+                            (millisecondsSinceJoin < 31555e6
+                                ? ' day(s)'
+                                : ' year(s)') +
+                            ' (joined: ' +
+                            profile['date_joined'] +
+                            ')'
+                    )
+                )
+            )
         );
     }
 }
-*/
 
 class pageConnections extends React.Component {
     render() {
