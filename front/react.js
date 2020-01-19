@@ -121,7 +121,7 @@ class Main extends React.Component {
                     break;
                 }
                 case 'messages': {
-                    finalPage = null;
+                    finalPage = e('p', {}, 'coming soon');
                     break;
                 }
                 case 'profile': {
@@ -129,7 +129,7 @@ class Main extends React.Component {
                     break;
                 }
                 case 'saved': {
-                    finalPage = null;
+                    finalPage = e(pageSaved);
                     break;
                 }
                 /*

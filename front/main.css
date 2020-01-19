@@ -33,12 +33,18 @@ body {
     border-bottom: 2px solid #111;
 }
 
+#page ul {
+    counter-reset: counter-no;
+}
+
 #page ul li {
-    margin: 0 15px 8px;
-    padding: 0 15px;
+    counter-increment: counter-no;
+    margin: 0.8em 15px 8px;
+    padding: 0 15px 0 22px;
     max-width: 600px;
     list-style: none;
     word-wrap: break-word;
+    position: relative;
 }
 
 #page ul li:not(:last-child) {
@@ -46,21 +52,33 @@ body {
     border-bottom: 1px solid #111;
 }
 
+#page ul li::before {
+    content: counter(counter-no) '. ';
+    vertical-align: middle;
+    position: absolute;
+    font-size: 0.8em;
+    bottom: calc(100% - 0.8em);
+    left: 0;
+    color: #555;
+}
+
 .commentTxt {
     margin-bottom: 12px;
 }
 
-.contactsNav {
+.pageNav {
     position: sticky;
     top: -12px;
     width: 100%;
     background: #fff;
     padding: 5px 12px;
+    z-index: 99;
+    border-bottom: 2px solid #000;
 }
-.contactsNav > *:not(:last-child) {
+.pageNav > *:not(:last-child) {
     margin-right: 12px;
 }
-.contactsContainer > * {
+.pageNavedContainer > * {
     padding: 40px 0;
 }
 
@@ -76,4 +94,14 @@ body {
     border-radius: 0;
     padding: 0;
     border: 2px solid #000;
+}
+
+.savedContainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: space-between; /* vs each item margin bottom */
+}
+.savedContainer > * {
+    flex: 0 1 calc(50% - 8px);
 }

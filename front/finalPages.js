@@ -15,6 +15,141 @@ class pageComments extends React.Component {
 }
 */
 
+class pageSaved extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { activeCollection: null };
+    }
+    render() {
+        let collectionButtons = [];
+
+        let items = [];
+        let activeColName = '',
+            activeColCreated = '',
+            activeColUpdated = '';
+
+        window.displayData['saved.json'].saved_collections.forEach(
+            collection => {
+                collectionButtons.push(
+                    e(
+                        'button',
+                        {
+                            key: 'select_collection_' + collection.name,
+                            onClick: () => {
+                                this.setState({
+                                    activeCollection: collection.name
+                                });
+                            }
+                        },
+                        collection.name
+                    )
+                );
+
+                // load specific collection if requested earlier
+                if (
+                    this.state.activeCollection != null &&
+                    this.state.activeCollection != 'All posts' &&
+                    collection.name == this.state.activeCollection
+                ) {
+                    collection.media.forEach((item, i) => {
+                        items.push(
+                            e(
+                                'li',
+                                {
+                                    key:
+                                        'col_' +
+                                        collection.name +
+                                        '_saved_post_' +
+                                        i
+                                },
+                                'Post by ' + item[1],
+                                e('br'),
+                                item[0]
+                            )
+                        );
+                    });
+                    activeColName = collection.name;
+                    activeColCreated = collection.created_at;
+                    activeColUpdated = collection.updated_at;
+                    return true;
+                }
+            }
+        );
+
+        if (this.state.activeCollection == 'All posts') {
+            // load all saved items (saved_media)
+            console.log('load all saved');
+            window.displayData['saved.json'].saved_media.forEach((media, i) => {
+                items.push(
+                    e(
+                        'li',
+                        { key: 'all_saved_post_' + i },
+                        'Post by ' + media[1],
+                        e('br'),
+                        media[0]
+                    )
+                );
+            });
+        } else if (this.state.activeCollection == null) {
+            items.push(
+                e(
+                    'li',
+                    { key: 'emptyCollection' },
+                    e('h2', {}, 'Please select a collection')
+                )
+            );
+        }
+
+        return e(
+            'div',
+            {
+                style: {
+                    display: 'flex',
+                    flexFlow: 'row nowrap'
+                }
+            },
+            e(
+                'div',
+                { style: { maxWidth: '50%', position: 'sticky', top: 0 } },
+                e('h1', {}, 'Your Saved Posts'),
+                e(
+                    'div',
+                    {
+                        className: 'savedContainer'
+                    },
+                    e(
+                        'button',
+                        {
+                            key: 'all_posts',
+                            onClick: e => {
+                                this.setState({
+                                    activeCollection: 'All posts'
+                                });
+                            }
+                        },
+                        'All saved posts'
+                    ),
+                    collectionButtons
+                )
+            ),
+            e(
+                'div',
+                { style: { marginLeft: '8px' } },
+                e(
+                    'h1',
+                    {},
+                    'Selected Collection: ' +
+                        this.state.activeCollection +
+                        '(' +
+                        items.length +
+                        ')'
+                ),
+                e('ul', {}, items)
+            )
+        );
+    }
+}
+
 class pageProfile extends React.Component {
     render() {
         let profile = window.displayData['profile.json'];
@@ -255,7 +390,7 @@ class pageConnections extends React.Component {
             e(
                 'div',
                 {
-                    className: 'contactsNav'
+                    className: 'pageNav'
                 },
                 e('a', { href: '#connectionsNavBlocked' }, 'Blocked Users'),
                 e('a', { href: '#connectionsNavCloseF' }, 'Close Friends'),
@@ -280,18 +415,18 @@ class pageConnections extends React.Component {
             e(
                 'div',
                 {
-                    className: 'contactsContainer'
+                    className: 'pageNavedContainer'
                 },
                 e(
                     'div',
                     { id: 'connectionsNavBlocked' },
-                    e('h2', {}, 'Blocked Users'),
+                    e('h2', {}, 'Blocked Users (' + blocked.length + ')'),
                     e('ul', {}, blocked.length > 0 ? blocked : emptyItem)
                 ),
                 e(
                     'div',
                     { id: 'connectionsNavCloseF' },
-                    e('h2', {}, 'Close Friends'),
+                    e('h2', {}, 'Close Friends (' + closeFriends.length + ')'),
                     e(
                         'ul',
                         {},
@@ -301,13 +436,19 @@ class pageConnections extends React.Component {
                 e(
                     'div',
                     { id: 'connectionsNavRestricted' },
-                    e('h2', {}, 'Restricted Users'),
+                    e('h2', {}, 'Restricted Users (' + restricted.length + ')'),
                     e('ul', {}, restricted.length > 0 ? restricted : emptyItem)
                 ),
                 e(
                     'div',
                     { id: 'connectionsNavSentFR' },
-                    e('h2', {}, 'Sent Follow Requests'),
+                    e(
+                        'h2',
+                        {},
+                        'Sent Follow Requests (' +
+                            sentFollowRequests.length +
+                            ')'
+                    ),
                     e(
                         'ul',
                         {},
@@ -319,19 +460,23 @@ class pageConnections extends React.Component {
                 e(
                     'div',
                     { id: 'connectionsNavFollowers' },
-                    e('h2', {}, 'Followers'),
+                    e('h2', {}, 'Followers (' + followers.length + ')'),
                     e('ul', {}, followers.length > 0 ? followers : emptyItem)
                 ),
                 e(
                     'div',
                     { id: 'connectionsNavFollowing' },
-                    e('h2', {}, 'Following'),
+                    e('h2', {}, 'Following (' + following.length + ')'),
                     e('ul', {}, following.length > 0 ? following : emptyItem)
                 ),
                 e(
                     'div',
                     { id: 'connectionsNavFollowingHT' },
-                    e('h2', {}, 'Following Hashtags'),
+                    e(
+                        'h2',
+                        {},
+                        'Following Hashtags (' + followingHashtags.length + ')'
+                    ),
                     e(
                         'ul',
                         {},
@@ -366,7 +511,13 @@ class pageContacts extends React.Component {
         return e(
             'div',
             {},
-            e('h1', {}, 'Your contacts'),
+            e(
+                'h1',
+                {},
+                'Your contacts (' +
+                    window.displayData['contacts.json'].length +
+                    ')'
+            ),
             e('ul', {}, contactItems)
         );
     }
@@ -407,7 +558,7 @@ class pageComments extends React.Component {
         return e(
             'div',
             { className: 'comments' },
-            e('h1', {}, 'Your comments'),
+            e('h1', {}, 'Your comments (' + postComments.length + ')'),
             e('ul', {}, postComments)
         );
     }
