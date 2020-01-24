@@ -25,6 +25,7 @@ body {
 #page {
     padding: 12px 30px;
     overflow-y: auto;
+    width: 100%;
 }
 
 #page h1 {
@@ -104,4 +105,43 @@ body {
 }
 .savedContainer > * {
     flex: 0 1 calc(50% - 8px);
+}
+
+#page .userMessage {
+    background: #ccc;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    padding: 5px 8px;
+    width: 80%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+#page .userMessage.left {
+    margin-right: 20%;
+    border-bottom-left-radius: 0;
+}
+#page .userMessage.right {
+    border-bottom-right-radius: 0;
+    margin-left: 20%;
+}
+#page .userMessage.right p {
+    text-align: right;
+}
+
+#searchBar {
+    width: 100vw;
+    height: 22px;
+    background: #111;
+    display: none;
+    position: sticky;
+    top: 0;
+}
+#searchBar input {
+    border: none;
+    outline: none;
+    background: #252525;
+    color: #fff;
+}
+#searchBar.visible {
+    display: block;
 }

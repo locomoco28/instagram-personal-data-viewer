@@ -45,6 +45,11 @@ class SelectFile extends React.Component {
             // resp = data
             displayFiles = resp.totalKeys;
             window.displayData = resp;
+            window.currentUsername = null;
+            if (Object.keys(window.displayData).indexOf('profile.json') > -1) {
+                window.currentUsername =
+                    window.displayData['profile.json'].username;
+            }
             console.log('data updated', JSON.stringify(resp).length, resp);
         } else {
             M.toast({
@@ -121,7 +126,7 @@ class Main extends React.Component {
                     break;
                 }
                 case 'messages': {
-                    finalPage = e('p', {}, 'coming soon');
+                    finalPage = e(pageMessages);
                     break;
                 }
                 case 'profile': {

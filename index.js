@@ -1,4 +1,10 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const {
+    app,
+    BrowserWindow,
+    Menu,
+    ipcMain,
+    globalShortcut
+} = require('electron');
 const admZip = require('adm-zip');
 const path = require('path');
 const fs = require('fs');
@@ -30,6 +36,15 @@ app.on('ready', () => {
     window.loadURL(`file://${path.join(__dirname, './front/index.html')}`);
     Menu.setApplicationMenu(Menu.buildFromTemplate(require('./menu.js')));
     //Menu.setApplicationMenu(null);
+
+    /*
+    const searchKeybindListener = globalShortcut.register(
+        'CommandOrControl+F',
+        () => {
+            window.webContents.send('find-cmd-triggered');
+        }
+    );
+    */
 
     window.show();
 });

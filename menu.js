@@ -22,12 +22,11 @@ module.exports = [
                 ]
             },
             {
-                label: 'Dark Mode',
-                type: 'checkbox'
-            },
-            {
-                label: 'High Contrast',
-                type: 'checkbox'
+                label: 'Find In Page (Ctrl+F)',
+                accelerator: 'CmdOrCtrl+F',
+                click(item, focusedWindow) {
+                    focusedWindow.webContents.send('find-cmd-triggered');
+                }
             },
             {
                 label: 'Fullscreen',
@@ -37,7 +36,6 @@ module.exports = [
     },
 
     {
-        label: 'Fenster',
         role: 'window',
         submenu: [
             {
@@ -63,11 +61,10 @@ module.exports = [
     },
 
     {
-        label: 'Über',
         role: 'help',
         submenu: [
             {
-                label: 'Mehr Erfahren',
+                label: 'Find out more',
                 click(item, focusedWindow) {
                     focusedWindow.webContents.console.log('Hello World');
                 }

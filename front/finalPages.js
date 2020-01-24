@@ -15,6 +15,152 @@ class pageComments extends React.Component {
 }
 */
 
+class pageMessages extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            activeChat: null
+        };
+
+        this.openChat.bind = this.openChat;
+    }
+
+    openChat(name) {
+        this.setState({
+            activeChat: name
+        });
+    }
+
+    render() {
+        let chatBtns = [];
+        let chatIndexes = {};
+        let chatMessages = [];
+        let groupCnt = 1;
+        window.displayData['messages.json'].forEach((item, i) => {
+            let chatParties = item.participants.length;
+            let itemParticipant =
+                item.participants[0] == window.currentUsername
+                    ? item.participants[1]
+                    : item.participants[0];
+            let chatWith =
+                chatParties > 2
+                    ? 'Group ' +
+                      groupCnt++ +
+                      '(' +
+                      chatParties +
+                      ' participants)'
+                    : itemParticipant;
+            if (Object.keys(chatIndexes).indexOf(chatWith) < 0) {
+                chatIndexes[chatWith] = [];
+
+                chatBtns.push(
+                    e(
+                        'button',
+                        {
+                            key:
+                                'message_index_' +
+                                i +
+                                '_itemParticipant_' +
+                                itemParticipant,
+                            onClick: () => {
+                                this.openChat(chatWith);
+                            },
+                            style: {
+                                width: '100%'
+                            }
+                        },
+                        chatWith
+                    )
+                );
+            }
+            chatIndexes[chatWith].push(i);
+        });
+        if (this.state.activeChat != null) {
+            chatIndexes[this.state.activeChat].forEach((chatIndex, iConvo) => {
+                window.displayData['messages.json'][
+                    chatIndex
+                ].conversation.forEach((msg, iMsg) => {
+                    let { sender, created_at, text } = msg;
+                    chatMessages.push(
+                        e(
+                            'div',
+                            {
+                                className:
+                                    'userMessage ' +
+                                    (sender == window.currentUsername
+                                        ? 'right'
+                                        : 'left'),
+                                key:
+                                    'message_' +
+                                    iConvo +
+                                    '.' +
+                                    iMsg +
+                                    '_in_' +
+                                    this.state.activeChat,
+                                order: new Date(
+                                    created_at.substring(0, 10)
+                                ).getTime()
+                            },
+                            e(
+                                'div',
+                                {},
+                                e('p', { className: 'sender' }, sender),
+                                e('p', { className: 'text' }, text)
+                            )
+                        )
+                    );
+                });
+            });
+        }
+        return [
+            e(
+                'h1',
+                {},
+                'Your Messages' +
+                    (this.state.activeChat != null
+                        ? ' with ' + this.state.activeChat
+                        : '')
+            ),
+            e(
+                'div',
+                {
+                    style: {
+                        display: 'flex',
+                        flexFlow: 'row nowrap'
+                    }
+                },
+                e(
+                    'div',
+                    {
+                        style: {
+                            display: 'flex',
+                            flexFlow: 'column nowrap',
+                            width: '50%',
+                            maxWidth: '180px',
+                            overflowY: 'auto'
+                        }
+                    },
+                    chatBtns
+                ),
+                e(
+                    'div',
+                    {
+                        style: {
+                            display: 'flex',
+                            flexFlow: 'column nowrap',
+                            overflowY: 'auto',
+                            paddingLeft: '12px',
+                            paddingBottom: '20px'
+                        }
+                    },
+                    e('div', { id: 'messageChatContainer' }, chatMessages)
+                )
+            )
+        ];
+    }
+}
+
 class pageSaved extends React.Component {
     constructor(props) {
         super(props);
@@ -165,9 +311,7 @@ class pageProfile extends React.Component {
             new Date(profile['date_joined']).getTime() - today.getTime()
         );
 
-        return e(
-            'div',
-            {},
+        return [
             e('h1', {}, 'Your Profile'),
             e(
                 'div',
@@ -234,7 +378,7 @@ class pageProfile extends React.Component {
                     )
                 )
             )
-        );
+        ];
     }
 }
 
@@ -383,9 +527,7 @@ class pageConnections extends React.Component {
 
         let emptyItem = e('li', {}, 'No users found');
 
-        return e(
-            'div',
-            {},
+        return [
             e('h1', {}, 'Your Connections'),
             e(
                 'div',
@@ -486,7 +628,7 @@ class pageConnections extends React.Component {
                     )
                 )
             )
-        );
+        ];
     }
 }
 
@@ -508,9 +650,7 @@ class pageContacts extends React.Component {
             );
         });
 
-        return e(
-            'div',
-            {},
+        return [
             e(
                 'h1',
                 {},
@@ -519,7 +659,7 @@ class pageContacts extends React.Component {
                     ')'
             ),
             e('ul', {}, contactItems)
-        );
+        ];
     }
 }
 

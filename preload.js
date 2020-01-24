@@ -8,6 +8,32 @@ require('./front/materialize/js/materialize.min.js');
 window.addEventListener(
     'DOMContentLoaded',
     function() {
+        ipcRenderer.on('find-cmd-triggered', () => {
+            document.getElementById('searchBar').classList.toggle('visible');
+        });
+
+        document.getElementById('searchPage').addEventListener('keydown', e => {
+            if (e.keyCode == 13) {
+                // enter
+                if (e.target.value.length > 0) {
+                    window.find(e.target.value);
+
+                    window.scrollTo({
+                        top: window
+                            .getSelection()
+                            .anchorNode.parentElement.getBoundingClientRect()
+                            .top,
+                        behavior: 'smooth'
+                    });
+                }
+            } else if (e.keyCode == 27) {
+                // escape
+                document
+                    .getElementById('searchBar')
+                    .classList.toggle('visible');
+            }
+        });
+
         window.getFileData = async files => {
             const data = await ipcRenderer.invoke('unzip files', files);
             /**
