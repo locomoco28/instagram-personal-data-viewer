@@ -1,5 +1,9 @@
 ## instagram-personal-data-viewer
-# View your Instagram data in a nice UI instead of plain JSON
+**The codebase is horrible**
+
+I apologize for the bad codebase and the bad performance. Opening a chat loads all messages before displaying them. Therefore it's pretty slow when opening chats with a lot of messages and is heavy on the memory.
+
+# View your Instagram data in a "nice" UI instead of plain JSON
 _[How to request personal data on Instagram](https://help.instagram.com/181231772500920)_
 
 This is a simple tool to view your personal data that you can request on Instagram. I have created this tool because I thought it's pretty unhandy of Instagram to just give the user multiple zip archives containing plain json.
