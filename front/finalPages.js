@@ -81,7 +81,29 @@ class pageMessages extends React.Component {
                 window.displayData['messages.json'][
                     chatIndex
                 ].conversation.forEach((msg, iMsg) => {
-                    let { sender, created_at, text } = msg;
+                    let {
+                        sender,
+                        created_at,
+                        text,
+                        media_share_url,
+                        media_owner,
+                        media_share_caption
+                    } = msg;
+                    let has_media_url =
+                            media_owner &&
+                            media_share_url.substring(0, 4) == 'http',
+                        media_extension = has_media_url
+                            ? /(?:\.([^.]+))?$/.exec(
+                                  media_share_url
+                                      .split('#')
+                                      .shift()
+                                      .split('?')
+                                      .shift()
+                                      .split('/')
+                                      .pop()
+                              )[1]
+                            : 'no_media';
+
                     chatMessages.push(
                         e(
                             'div',
@@ -106,7 +128,70 @@ class pageMessages extends React.Component {
                                 'div',
                                 {},
                                 e('p', { className: 'sender' }, sender),
-                                e('p', { className: 'text' }, text)
+                                media_owner &&
+                                    e(
+                                        'div',
+                                        { className: 'media' },
+                                        /*extensions: jpg/mp4*/
+                                        has_media_url
+                                            ? media_extension == 'jpg'
+                                                ? e(
+                                                      'div',
+                                                      { className: 'image' },
+                                                      e('img', {
+                                                          src: media_share_url
+                                                      }),
+                                                      e(
+                                                          'p',
+                                                          {},
+                                                          'Media from: ' +
+                                                              media_owner
+                                                      )
+                                                  )
+                                                : /* mp4 urls return 403 forbidden */
+                                                  /*: 
+                                                  media_extension == 'mp4'
+                                                ? e(
+                                                      'div',
+                                                      { className: 'video' },
+                                                      e('video', {
+                                                          src: media_share_url,
+                                                          controls: ''
+                                                      }),
+                                                      e(
+                                                          'p',
+                                                          {},
+                                                          'Media from: ' +
+                                                              media_owner
+                                                      )
+                                                  )
+                                                  */
+                                                  e(
+                                                      'a',
+                                                      { href: media_share_url },
+                                                      'Media from: ' +
+                                                          media_owner
+                                                  )
+                                            : e(
+                                                  'p',
+                                                  {
+                                                      className: 'owner invalid'
+                                                  },
+                                                  'Media not available. Owner: ' +
+                                                      media_owner
+                                              ),
+                                        e(
+                                            'p',
+                                            { className: 'caption' },
+                                            media_share_caption
+                                        )
+                                    ),
+                                e('p', { className: 'text' }, text),
+                                e(
+                                    'small',
+                                    { className: 'timestamp' },
+                                    created_at
+                                )
                             )
                         )
                     );
